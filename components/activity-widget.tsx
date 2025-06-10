@@ -67,7 +67,7 @@ export function ActivityWidget({ data, loading }: ActivityWidgetProps) {
     if (!mainActivity) return null
 
     // Visual Studio Code
-    if (mainActivity.application_id === "383226320970055681" || mainActivity.name.includes("Visual Studio Code")) {
+    if (mainActivity.application_id === "786163564205047839" || mainActivity.name.includes("Visual Studio Code")) {
       return {
         type: "Coding",
         name: mainActivity.name,
@@ -135,7 +135,7 @@ export function ActivityWidget({ data, loading }: ActivityWidgetProps) {
           <Monitor className="w-5 h-5 text-gray-400" />
           <span className="text-gray-400 text-sm font-medium">Activity</span>
         </div>
-        <p className="text-gray-400 text-sm">Delta is not doing anything right now.</p>
+        <p className="text-gray-400 text-sm">Aditya is not doing anything right now.</p>
       </div>
     )
   }

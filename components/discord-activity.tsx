@@ -12,7 +12,7 @@ export function DiscordActivity({ activity, elapsedTime }: DiscordActivityProps)
     // Discord activity types: 0 = Playing, 1 = Streaming, 2 = Listening, 3 = Watching, 4 = Custom, 5 = Competing
     switch (activity.type) {
       case 0: // Playing
-        if (activity.application_id === "383226320970055681") {
+        if (activity.application_id === "786163564205047839") {
           // Visual Studio Code
           return <Code className="w-5 h-5 text-blue-300" />
         }
@@ -44,7 +44,7 @@ export function DiscordActivity({ activity, elapsedTime }: DiscordActivityProps)
 
   // Get background color based on activity
   const getActivityBg = () => {
-    if (activity.application_id === "383226320970055681") {
+    if (activity.application_id === "786163564205047839") {
       return "bg-blue-600" // VS Code
     }
 
@@ -60,7 +60,7 @@ export function DiscordActivity({ activity, elapsedTime }: DiscordActivityProps)
 
   // Get the app icon or first letter
   const getAppIcon = () => {
-    if (activity.application_id === "383226320970055681") {
+    if (activity.application_id === "786163564205047839") {
       return "VS"
     }
 

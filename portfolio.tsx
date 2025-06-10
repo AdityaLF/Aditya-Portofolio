@@ -56,7 +56,7 @@ export default function Portfolio() {
 
                 {/* التحية والمسمى الوظيفي */}
                 <div className="space-y-2">
-                  <h1 className="text-3xl font-bold text-white drop-shadow-lg">Hey, I'm Delta! 👋</h1>
+                  <h1 className="text-3xl font-bold text-white drop-shadow-lg">Hey, I'm Aditya!</h1>
                   <p className="text-xl text-purple-200 font-medium">Software Engineering</p>
                 </div>
 

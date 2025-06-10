@@ -24,28 +24,24 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
       id: 1,
       title: "Discord Nitro Effects",
       description: "Added special Nitro effects for founders with custom animations",
-      date: "Today",
       icon: <Sparkles className="w-4 h-4 text-purple-400" />,
     },
     {
       id: 2,
       title: "Chairman Badge",
       description: "Updated the Chairman badge with new design and animations",
-      date: "Today",
       icon: <CheckCircle2 className="w-4 h-4 text-blue-400" />,
     },
     {
       id: 3,
       title: "Spotify Integration",
       description: "Enhanced Spotify widget with real-time lyrics display",
-      date: "Yesterday",
       icon: <CheckCircle2 className="w-4 h-4 text-green-400" />,
     },
     {
       id: 4,
       title: "Skills Section",
       description: "Added toggle functionality to skills section with real platform icons",
-      date: "Yesterday",
       icon: <CheckCircle2 className="w-4 h-4 text-yellow-400" />,
     },
   ]
@@ -55,19 +51,16 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
       id: 1,
       title: "Projects Section",
       description: "Showcase portfolio projects with descriptions and links",
-      status: "In Progress",
     },
     {
       id: 2,
       title: "Contact Form",
       description: "Add a contact form for direct communication",
-      status: "Planned",
     },
     {
       id: 3,
       title: "Blog Integration",
       description: "Personal blog with articles about coding and design",
-      status: "Planned",
     },
   ]
 
@@ -85,7 +78,7 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
             <Sparkles className="w-5 h-5 text-purple-400" />
             <h3 className="text-white font-semibold">What we do today</h3>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleClose} className="h-8 w-8 p-0">
+          <Button variant="primary" size="sm" onClick={handleClose} className="h-8 w-8 p-0">
             <X className="w-4 h-4 text-gray-400" />
           </Button>
         </div>
@@ -148,7 +141,7 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
                           className={`text-xs px-2 py-0.5 rounded-full ${
                             item.status === "In Progress"
                               ? "bg-blue-900/50 text-blue-400"
-                              : "bg-purple-900/50 text-purple-400"
+                              : ""
                           }`}
                         >
                           {item.status}
@@ -166,8 +159,12 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
         {/* Footer */}
         <div className="border-t border-gray-800 p-4">
           <div className="flex justify-end">
-            <Button variant="outline" size="sm" onClick={handleClose} className="text-xs">
-              Close
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleClose}
+              className="h-8 w-auto p-0 flex items-center hover:text-white transition-all duration-200">
+              <span className="text-gray-400 text-xs hover:text-white">Close</span>
             </Button>
           </div>
         </div>
