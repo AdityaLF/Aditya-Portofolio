@@ -115,7 +115,7 @@ export default function Portfolio() {
         <div className="text-center mb-8">
           <div className="relative inline-block">
             <img
-              src="https://i.postimg.cc/prZnHyq3/20250610-143605.jpg"
+              src="/images/profile.jpg"
               alt="Aditya Profile"
               className="w-24 h-24 rounded-full object-cover border-4 border-gray-600 mx-auto mb-4"
             />
