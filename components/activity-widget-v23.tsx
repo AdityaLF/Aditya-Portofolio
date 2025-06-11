@@ -138,7 +138,7 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
 
 export function ActivityWidgetV23({ data, loading, onRefresh }: ActivityWidgetV23Props) {
   
-  const blockedNames = ['Spotify', 'Café']; 
+  const blockedNames = ['Spotify', 'Café', 'Crunchyroll']; 
 
   const allActivities = data?.activities?.filter(
     act => act.type !== 4 && !blockedNames.includes(act.name)
