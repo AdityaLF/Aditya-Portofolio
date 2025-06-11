@@ -24,7 +24,8 @@ export default function Portfolio() {
     const updateTime = () => {
       const now = new Date()
       setCurrentTime(
-        now.toLocaleTimeString(undefined, {
+        now.toLocaleTimeString("id-ID", {
+          timeZone: "Asia/Makassar", 
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
