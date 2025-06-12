@@ -86,9 +86,9 @@ export default function Portfolio() {
   // Dynamic background based on Spotify status
   const getBackgroundStyle = () => {
     if (isSpotifyPlaying) {
-      return "bg-gradient-to-br from-green-900/20 via-gray-800 to-gray-900"
+      return "bg-gradient-to-br from-gray-900/20 via-gray-800 to-gray-900"
     }
-    return "bg-gradient-to-br from-red-900/20 via-gray-800 to-gray-900"
+    return "bg-gradient-to-br from-gray-900/20 via-gray-800 to-gray-900"
   }
 
   return (
