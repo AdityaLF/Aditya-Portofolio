@@ -13,20 +13,19 @@ interface ActivityWidgetV23Props {
 const ActivityRow = ({ activity }: { activity: Activity }) => {
   const [elapsedTime, setElapsedTime] = useState("");
   const [progress, setProgress] = useState(0);
-
   const [durationText, setDurationText] = useState("elapsed");
 
   const formatDuration = (ms: number) => {
-    if (!ms || ms <= 0) return "";
+    if (!ms || ms <= 0) return "00:00";
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
+    const paddedMinutes = String(minutes).padStart(2, '0');
     const paddedSeconds = String(seconds).padStart(2, '0');
 
     if (hours > 0) {
-      const paddedMinutes = String(minutes).padStart(2, '0');
       return `${hours}:${paddedMinutes}:${paddedSeconds}`;
     }
     return `${minutes}:${paddedSeconds}`;
@@ -39,7 +38,7 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
       return;
     };
 
-    const GAME_MAX_DURATION_MS = 10 * 60 * 60 * 1000; // 10 hour
+    const GAME_MAX_DURATION_MS = 10 * 60 * 60 * 1000;
 
     const startTime = activity.timestamps.start;
     const endTime = activity.timestamps.end;
@@ -58,15 +57,23 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
 
       if (elapsedMs < 0) return;
 
-      const totalSeconds = Math.floor(elapsedMs / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      let formatted = "";
-      if (hours > 0) formatted += `${hours}h `;
-      if (minutes > 0 || hours > 0) formatted += `${minutes}m `;
-      formatted += `${seconds}s`;
-      setElapsedTime(formatted.trim());
+      if (activityName === 'youtube') {
+
+        setElapsedTime(formatDuration(elapsedMs));
+      } else {
+        
+        const totalSeconds = Math.floor(elapsedMs / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        let formatted = "";
+        if (hours > 0) formatted += `${hours}h `;
+        if (minutes > 0 || hours > 0) formatted += `${minutes}m `;
+        formatted += `${seconds}s`;
+        
+        setElapsedTime(formatted.trim());
+      }
 
       if (activityName === 'youtube' && endTime) {
         const totalMs = endTime - startTime;
