@@ -92,7 +92,7 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
 
   const gameImageMap: { [key: string]: string } = {
     'elden ring nightreign': 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/2622380/b02da776020b00125a508dc3f0bb1470da6e0805.ico',
-    'amnesia: the bunker3': 'https://cdn2.steamgriddb.com/icon/58a7166acf19167f807fe272bc65c61b/32/256x256.png',
+    'amnesia: the bunker': 'https://cdn2.steamgriddb.com/icon/58a7166acf19167f807fe272bc65c61b/32/256x256.png',
     'the sinking city': 'https://gamecritics.com/wp-content/uploads/2019/10/Sinking-City.jpg',
     'resident evil 4': 'https://th.bing.com/th/id/OIP.IXjQkadghOjpIYHL2ONEXQAAAA?rs=1&pid=ImgDetMain',
     'resident evil village': 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/1196590/d9d775d8013daa1cde6d5c64464421111dd46333.ico',
