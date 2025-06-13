@@ -90,6 +90,18 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
     return () => clearInterval(interval);
   }, [activity.timestamps, activity.name]);
 
+  const gameImageMap: { [key: string]: string } = {
+    'elden ring nightreign': 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/2622380/b02da776020b00125a508dc3f0bb1470da6e0805.ico',
+    'amnesia: the bunker3': 'https://cdn2.steamgriddb.com/icon/58a7166acf19167f807fe272bc65c61b/32/256x256.png',
+    'the sinking city': 'https://gamecritics.com/wp-content/uploads/2019/10/Sinking-City.jpg',
+    'resident evil 4': 'https://th.bing.com/th/id/OIP.IXjQkadghOjpIYHL2ONEXQAAAA?rs=1&pid=ImgDetMain',
+    'resident evil village': 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/1196590/d9d775d8013daa1cde6d5c64464421111dd46333.ico',
+    'rise of the tomb raider': 'https://oyster.ignimgs.com/mediawiki/apis.ign.com/rise-of-the-tomb-raider/6/6f/Rise-of-the-tomb-raider.jpg',
+    'lies of p': 'https://c.clc2l.com/t/L/i/Lies-of-P-t0kxA6.jpg',
+    'dark souls iii': 'https://th.bing.com/th/id/OIP.QN0f-N1XSqrrPl6eq_-rnAHaEK?rs=1&pid=ImgDetMain',
+    "don't starve together": 'https://cdn2.steamgriddb.com/icon_thumb/f18e1e190060ee0af7d043f41d1f28df.png'
+  };
+  
   const renderActivityImage = (act: Activity) => {
     const name = act.name?.toLowerCase() ?? '';
 
@@ -101,6 +113,11 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
       return <Code className="w-8 h-8 text-blue-400" />;
     }
 
+    const manualImageUrl = gameImageMap[name];
+    if (manualImageUrl) {
+      return <img src={manualImageUrl} alt={act.name} className="w-full h-full object-cover" />;
+    }
+    
     const imageUrl = act.assets?.large_image ? `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png` : null;
     if (imageUrl) {
       return <img src={imageUrl} alt={act.name} className="w-full h-full object-cover" />;
