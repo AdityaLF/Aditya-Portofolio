@@ -5,14 +5,14 @@ import { Gamepad2, PcCase, Youtube, ChevronDown, ChevronUp, Globe } from "lucide
 
 const recentlyPlayed = [
   {
+    name: "Visual Studio Code",
+    platform: "PC",
+    imageUrl: "https://raw.githubusercontent.com/leonardssh/vscord/refs/heads/main/assets/icons/idle-vscode.png",
+  },
+  {
     name: "Resident Evil 4",
     platform: "PC",
     imageUrl: "https://th.bing.com/th/id/OIP.IXjQkadghOjpIYHL2ONEXQAAAA?rs=1&pid=ImgDetMain",
-  },
-  {
-    name: "Rise of the Tomb Raider",
-    platform: "PC",
-    imageUrl: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/rise-of-the-tomb-raider/6/6f/Rise-of-the-tomb-raider.jpg",
   },
   {
     name: "YouTube",
@@ -26,9 +26,9 @@ const recentlyPlayed = [
   },
 
   {
-    name: "DARK SOULS III",
+    name: "Rise of the Tomb Raider",
     platform: "PC",
-    imageUrl: "https://th.bing.com/th/id/OIP.QN0f-N1XSqrrPl6eq_-rnAHaEK?rs=1&pid=ImgDetMain",
+    imageUrl: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/rise-of-the-tomb-raider/6/6f/Rise-of-the-tomb-raider.jpg",
   },
   {
     name: "The Sinking City",
