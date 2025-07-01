@@ -7,7 +7,7 @@ const recentlyPlayed = [
   {
     name: "Visual Studio Code",
     platform: "PC",
-    imageUrl: "https://raw.githubusercontent.com/leonardssh/vscord/refs/heads/main/assets/icons/idle-vscode.png",
+    imageUrl: "https://i.postimg.cc/Nf47CTcs/idle-vscode-2.png",
   },
   {
     name: "Resident Evil 4",
@@ -20,15 +20,15 @@ const recentlyPlayed = [
     imageUrl: "https://vectorseek.com/wp-content/uploads/2023/06/Youtube-Symbol-Vector.jpg",
   },
   {
-    name: "Lies of P",
-    platform: "PC",
-    imageUrl: "https://c.clc2l.com/t/L/i/Lies-of-P-t0kxA6.jpg",
-  },
-
-  {
     name: "Rise of the Tomb Raider",
     platform: "PC",
     imageUrl: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/rise-of-the-tomb-raider/6/6f/Rise-of-the-tomb-raider.jpg",
+  },
+
+  {
+    name: "Amnesia: The Bunker",
+    platform: "PC",
+    imageUrl: "https://cdn2.steamgriddb.com/icon/58a7166acf19167f807fe272bc65c61b/32/256x256.png",
   },
   {
     name: "The Sinking City",
