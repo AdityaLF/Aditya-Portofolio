@@ -1,7 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { X, Sparkles, CheckCircle2, ArrowRight } from "lucide-react"
+import { useState, useEffect } from "react"
+import {
+  X, Sparkles, ArrowRight, Github,
+  ExternalLink, FolderCode,
+  History,
+  HistoryIcon,
+  FileClock
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface SiteUpdateNotificationProps {
@@ -11,6 +17,19 @@ interface SiteUpdateNotificationProps {
 export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [activeTab, setActiveTab] = useState<"updates" | "roadmap">("updates")
+  const [updates, setUpdates] = useState<any[]>([])
+  const [commits, setCommits] = useState<any[]>([])
+
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [isVisible])
 
   const handleClose = () => {
     setIsVisible(false)
@@ -19,64 +38,49 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
     }, 300)
   }
 
-  const updates = [
-    {
-      id: 1,
-      title: "Discord Nitro Effects",
-      description: "Added special Nitro effects for founders with custom animations",
-      icon: <Sparkles className="w-4 h-4 text-purple-400" />,
-    },
-    {
-      id: 2,
-      title: "Chairman Badge",
-      description: "Updated the Chairman badge with new design and animations",
-      icon: <CheckCircle2 className="w-4 h-4 text-blue-400" />,
-    },
-    {
-      id: 3,
-      title: "Spotify Integration",
-      description: "Enhanced Spotify widget with real-time lyrics display",
-      icon: <CheckCircle2 className="w-4 h-4 text-green-400" />,
-    },
-    {
-      id: 4,
-      title: "Skills Section",
-      description: "Added toggle functionality to skills section with real platform icons",
-      icon: <CheckCircle2 className="w-4 h-4 text-yellow-400" />,
-    },
-  ]
+  useEffect(() => {
+    fetch("https://api.github.com/users/adityalf/repos?sort=updated")
+      .then(res => res.json())
+      .then(data => {
+        const recent = data.slice(0, 5).map((repo: any) => ({
+          id: repo.id,
+          title: repo.name,
+          description: repo.description || "No description",
+          date: new Date(repo.updated_at).toLocaleDateString(),
+          github: repo.html_url,
+          homepage: repo.homepage || null,
+          icon: <Github className="w-4 h-4 text-white" />,
+        }))
+        setUpdates(recent)
+      })
+  }, [])
 
-  const roadmap = [
-    {
-      id: 1,
-      title: "Projects Section",
-      description: "Showcase portfolio projects with descriptions and links",
-    },
-    {
-      id: 2,
-      title: "Contact Form",
-      description: "Add a contact form for direct communication",
-    },
-    {
-      id: 3,
-      title: "Blog Integration",
-      description: "Personal blog with articles about coding and design",
-    },
-  ]
+  useEffect(() => {
+    fetch("https://api.github.com/repos/adityalf/Real-Time-Comment-Section/commits")
+      .then(res => res.json())
+      .then(data => {
+        const commitsData = data.slice(0, 10).map((commit: any) => ({
+          sha: commit.sha,
+          message: commit.commit.message,
+          date: new Date(commit.commit.committer.date).toLocaleDateString(),
+          url: commit.html_url,
+          repo: "adityalf/Real-Time-Comment-Section",
+        }))
+        setCommits(commitsData)
+      })
+  }, [])
 
   if (!isVisible) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div
-        className="bg-gray-900/95 backdrop-blur-sm border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 
-        w-full max-w-md animate-in fade-in duration-300 max-h-[80vh] flex flex-col"
-      >
+      <div className="bg-gray-900/95 backdrop-blur-sm border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 w-full max-w-md animate-in fade-in duration-300 max-h-[80vh] flex flex-col">
+        
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-800">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-400" />
-            <h3 className="text-white font-semibold">What we do today</h3>
+            <h3 className="text-white font-semibold">Latest Projects</h3>
           </div>
           <Button variant="primary" size="sm" onClick={handleClose} className="h-8 w-8 p-0">
             <X className="w-4 h-4 text-gray-400" />
@@ -93,7 +97,7 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
                 : "text-gray-400 hover:text-gray-300"
             }`}
           >
-            Recent Updates
+            Projects
           </button>
           <button
             onClick={() => setActiveTab("roadmap")}
@@ -103,51 +107,66 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
                 : "text-gray-400 hover:text-gray-300"
             }`}
           >
-            Roadmap
+            Commit Activity
           </button>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4">
           {activeTab === "updates" ? (
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto max-h-[350px] sm:max-h-none pr-1">
               {updates.map((update) => (
                 <div key={update.id} className="bg-gray-800/50 rounded-lg p-3 hover:bg-gray-800/80 transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="mt-1">{update.icon}</div>
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-white text-sm font-medium">{update.title}</h4>
-                        <span className="text-gray-500 text-xs">{update.date}</span>
+                    <div className="flex-1">
+                      <div className="relative">
+                        <h4 className="text-white text-sm font-medium pr-16">{update.title}</h4>
+                        <span className="absolute top-0 right-0 text-gray-500 text-xs">{update.date}</span>
                       </div>
                       <p className="text-gray-400 text-xs mt-1">{update.description}</p>
+                      <div className="flex gap-2 mt-1 flex-wrap">
+                        <a
+                          href={update.github}
+                          target="_blank"
+                          className="text-blue-400 text-xs hover:underline flex items-center gap-1"
+                        >
+                          <FolderCode className="w-3 h-3" /> Source Code
+                        </a>
+                        {update.homepage && (
+                          <a
+                            href={update.homepage}
+                            target="_blank"
+                            className="text-green-400 text-xs hover:underline flex items-center gap-1"
+                          >
+                            <ExternalLink className="w-3 h-3" /> Project Link
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="space-y-4">
-              {roadmap.map((item) => (
-                <div key={item.id} className="bg-gray-800/50 rounded-lg p-3 hover:bg-gray-800/80 transition-colors">
+            <div className="space-y-4 overflow-y-auto max-h-[350px] sm:max-h-none pr-1">
+              {commits.map((commit) => (
+                <div key={commit.sha} className="bg-gray-800/50 rounded-lg p-3 hover:bg-gray-800/80 transition-colors">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
-                      <ArrowRight className="w-4 h-4 text-purple-400" />
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-white text-sm font-medium">{item.title}</h4>
-                        <span
-                          className={`text-xs px-2 py-0.5 rounded-full ${
-                            item.status === "In Progress"
-                              ? "bg-blue-900/50 text-blue-400"
-                              : ""
-                          }`}
-                        >
-                          {item.status}
-                        </span>
+                    <History className="w-4 h-4 text-purple-400 mt-0.5" />
+                    <div className="flex-1">
+                      <div className="relative">
+                        <h4 className="text-white text-sm font-medium pr-16">{commit.repo}</h4>
+                        <span className="absolute top-0 right-0 text-gray-500 text-xs">{commit.date}</span>
                       </div>
-                      <p className="text-gray-400 text-xs mt-1">{item.description}</p>
+                      <p className="text-gray-400 text-sm mt-1">{commit.message}</p>
+                      <a
+                        href={commit.url}
+                        target="_blank"
+                        className="text-blue-400 text-xs hover:underline mt-1 inline-flex items-center gap-1"
+                      >
+                        <FileClock className="w-3 h-3" /> View Commit
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -163,7 +182,8 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
               variant="primary"
               size="sm"
               onClick={handleClose}
-              className="h-8 w-auto p-0 flex items-center hover:text-white transition-all duration-200">
+              className="h-8 w-auto p-0 flex items-center hover:text-white transition-all duration-200"
+            >
               <span className="text-gray-400 text-xs hover:text-white">Close</span>
             </Button>
           </div>
