@@ -56,19 +56,40 @@ export function SiteUpdateNotification({ onClose }: SiteUpdateNotificationProps)
   }, [])
 
   useEffect(() => {
-    fetch("https://api.github.com/repos/adityalf/Real-Time-Comment-Section/commits")
+    fetch("https://api.github.com/users/adityalf/repos?sort=updated")
       .then(res => res.json())
-      .then(data => {
-        const commitsData = data.slice(0, 10).map((commit: any) => ({
-          sha: commit.sha,
-          message: commit.commit.message,
-          date: new Date(commit.commit.committer.date).toLocaleDateString(),
-          url: commit.html_url,
-          repo: "adityalf/Real-Time-Comment-Section",
+      .then(async (repos) => {
+        const commitPromises = repos.map((repo: any) =>
+          fetch(`https://api.github.com/repos/adityalf/${repo.name}/commits`)
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+            if (!data || !data[0]) return null
+            return {
+              sha: data[0].sha,
+              message: data[0].commit.message,
+              date: new Date(data[0].commit.committer.date),
+              url: data[0].html_url,
+              repo: `adityalf/${repo.name}`
+            }
+          })
+          .catch(() => null)
+      )
+
+      const results = await Promise.all(commitPromises)
+      const validCommits = results.filter(Boolean)
+
+      const sortedCommits = validCommits.sort(
+        (a, b) => b!.date.getTime() - a!.date.getTime()
+      )
+
+      setCommits(
+        sortedCommits.slice(0, 5).map(commit => ({
+          ...commit,
+          date: commit.date.toLocaleDateString()
         }))
-        setCommits(commitsData)
-      })
-  }, [])
+      )
+    })
+}, [])
 
   if (!isVisible) return null
 
