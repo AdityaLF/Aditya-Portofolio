@@ -105,13 +105,29 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
   const renderActivityImage = (act: Activity) => {
     const name = act.name?.toLowerCase() ?? '';
 
-    if (name === 'youtube') {
-      return <Youtube className="w-8 h-8 text-red-500" />;
-    }
+if (name === 'youtube') {
+  const imageUrl = act.assets?.large_image?.startsWith('mp:')
+    ? `https://media.discordapp.net/${act.assets.large_image.replace('mp:', '')}`
+    : null;
 
-    if (name.includes('visual studio code')) {
-      return <Code className="w-8 h-8 text-blue-400" />;
-    }
+  return imageUrl ? (
+    <img src={imageUrl} alt="YouTube" className="w-full h-full object-cover rounded-lg" />
+  ) : (
+    <Youtube className="w-8 h-8 text-red-500" />
+  );
+}
+
+if (name === 'visual studio code') {
+  const imageUrl = act.assets?.large_image?.startsWith('mp:')
+    ? `https://media.discordapp.net/${act.assets.large_image.replace('mp:', '')}`
+    : null;
+
+  return imageUrl ? (
+    <img src={imageUrl} alt="visual studio code" className="w-full h-full object-cover rounded-lg" />
+  ) : (
+    <Code className="w-8 h-8 text-blue-400" />
+  );
+}
 
     const manualImageUrl = gameImageMap[name];
     if (manualImageUrl) {
