@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Code, Gamepad2, RefreshCw, Youtube } from "lucide-react" 
+import { Code, CodeXml, Gamepad2, MonitorPlay, RefreshCw, ScrollTextIcon, Youtube } from "lucide-react" 
 import type { LanyardData, Activity } from "@/hooks/use-lanyard" 
 
 interface ActivityWidgetV23Props {
@@ -103,44 +103,53 @@ const ActivityRow = ({ activity }: { activity: Activity }) => {
   };
   
   const renderActivityImage = (act: Activity) => {
-    const name = act.name?.toLowerCase() ?? '';
+  const name = act.name?.toLowerCase() ?? '';
+  const largeImage = act.assets?.large_image;
 
-if (name === 'youtube') {
-  const imageUrl = act.assets?.large_image?.startsWith('mp:')
-    ? `https://media.discordapp.net/${act.assets.large_image.replace('mp:', '')}`
-    : null;
+  const getImageUrl = () => {
+    if (!largeImage) return null;
 
-  return imageUrl ? (
-    <img src={imageUrl} alt="YouTube" className="w-full h-full object-cover rounded-lg" />
-  ) : (
-    <Youtube className="w-8 h-8 text-red-500" />
-  );
-}
-
-if (name === 'visual studio code') {
-  const imageUrl = act.assets?.large_image?.startsWith('mp:')
-    ? `https://media.discordapp.net/${act.assets.large_image.replace('mp:', '')}`
-    : null;
-
-  return imageUrl ? (
-    <img src={imageUrl} alt="visual studio code" className="w-full h-full object-cover rounded-lg" />
-  ) : (
-    <Code className="w-8 h-8 text-blue-400" />
-  );
-}
-
-    const manualImageUrl = gameImageMap[name];
-    if (manualImageUrl) {
-      return <img src={manualImageUrl} alt={act.name} className="w-full h-full object-cover" />;
-    }
-    
-    const imageUrl = act.assets?.large_image ? `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png` : null;
-    if (imageUrl) {
-      return <img src={imageUrl} alt={act.name} className="w-full h-full object-cover" />;
+    if (largeImage.startsWith('mp:')) {
+      return `https://media.discordapp.net/${largeImage.replace('mp:', '')}`;
     }
 
-    return <Gamepad2 className="w-8 h-8 text-green-400" />;
+    const isSpecialCase = name === 'youtube' || name === 'visual studio code';
+    if (isSpecialCase) {
+      return null;
+    }
+
+    return `https://cdn.discordapp.com/app-assets/${act.application_id}/${largeImage}.png`;
   };
+
+  const imageUrl = getImageUrl();
+  const manualImageUrl = gameImageMap[name];
+
+  if (manualImageUrl) {
+    return <img src={manualImageUrl} alt={act.name} className="w-full h-full object-cover" />;
+  }
+
+  if (name === 'youtube') {
+    return imageUrl ? (
+      <img src={imageUrl} alt="YouTube" className="w-full h-full object-cover rounded-lg" />
+    ) : (
+      <Youtube className="w-8 h-8 text-red-500" />
+    );
+  }
+
+  if (name === 'visual studio code') {
+    return imageUrl ? (
+      <img src={imageUrl} alt="visual studio code" className="w-full h-full object-cover rounded-lg" />
+    ) : (
+      <CodeXml className="w-8 h-8 text-blue-400" />
+    );
+  }
+
+  if (imageUrl) {
+    return <img src={imageUrl} alt={act.name} className="w-full h-full object-cover" />;
+  }
+
+  return <Gamepad2 className="w-8 h-8 text-blue-400" />;
+};
 
   return (
     <div className="flex flex-col gap-3">
@@ -184,26 +193,48 @@ export function ActivityWidgetV23({ data, loading, onRefresh }: ActivityWidgetV2
     act => act.type !== 4 && !blockedNames.includes(act.name)
   ) || [];
 
-  const mainActivity = allActivities[0]; 
+const getSpecificActivityInfo = (activity: Activity) => {
+  if (!activity) return null;
+  const activityName = activity.name.toLowerCase();
 
-  const getActivityInfo = () => {
-    if (!mainActivity) return null
-    if (mainActivity.name.toLowerCase().includes("visual studio code")) {
-      return { type: "Currently Coding", icon: <Code className="w-5 h-5 text-blue-400" /> }
-    }
-    return { type: "Currently Playing", icon: <Gamepad2 className="w-5 h-5 text-green-400" /> }
+  if (activityName.includes("visual studio code")) {
+    return { type: "Currently Coding", icon: <CodeXml className="w-5 h-5 text-green-400" /> };
   }
+
+  if (
+    activityName.includes("youtube") ||
+    activityName.includes("netflix") ||
+    activityName.includes("prime video")
+  ) {
+    return { type: "Currently Watching", icon: <MonitorPlay className="w-5 h-5 text-green-400" /> };
+  }
+  return { type: "Currently Playing", icon: <Gamepad2 className="w-5 h-5 text-green-400" /> };
+};
+
+const getOverallStatus = (activities: Activity[]) => {
+  const activityCount = activities.length;
+
+  if (activityCount > 1) {
+    return { type: "Currently Active", icon: <ScrollTextIcon className="w-5 h-5 text-green-400" /> };
+  }
+
+  if (activityCount === 1) {
+    return getSpecificActivityInfo(activities[0]);
+  }
+
+  return null;
+};
 
   const getStatusColor = () => {
     switch (data?.discord_status) {
-      case "online": return "bg-green-500 status-glow-green"
+      case "online": return "bg-yellow-500 status-glow-yellow"
       case "idle": return "bg-yellow-500 status-glow-yellow"
       case "dnd": return "bg-red-500 status-glow-red"
       default: return "bg-gray-500 status-glow-gray"
     }
   }
 
-  const activityInfo = getActivityInfo()
+  const activityInfo = getOverallStatus(allActivities);
 
   if (loading) {
     return (
